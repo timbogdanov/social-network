@@ -21,7 +21,7 @@ module.exports = {
         if (post) {
           return post;
         } else {
-          throw new Errpr('Post not found');
+          throw new Error('Post not found');
         }
       } catch (err) {
         throw new Error(err);
