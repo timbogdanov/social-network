@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import { Form, Button, Message } from 'semantic-ui-react';
 import { gql, useMutation } from '@apollo/client';
 
+import { useForm } from '../utils/hooks';
+
 const Register = (props) => {
   const [errors, setErrors] = useState({});
-  const [values, setValues] = useState({
+
+  const { onChange, onSubmit, values } = useForm(registerUser, {
     username: '',
     password: '',
     confirmPassword: '',
     email: '',
   });
-
-  const onChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, { data: { register: userData } }) {
@@ -22,15 +21,13 @@ const Register = (props) => {
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
-      console.log(err.graphQLErrors[0].extensions.exception.errors);
     },
     variables: values,
   });
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  function registerUser() {
     addUser();
-  };
+  }
 
   return (
     <div className='form-container'>
@@ -88,6 +85,7 @@ const Register = (props) => {
 
       {Object.keys(errors).length > 0 && (
         <Message
+          size='small'
           error
           header='There was some errors with your submission'
           list={Object.values(errors).map((value) => (
