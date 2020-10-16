@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Button, Form } from 'semantic-ui-react';
 import { gql, useMutation } from '@apollo/client';
 import { AuthContext } from '../context/auth';
+import { Message } from 'semantic-ui-react';
 
 import { useForm } from '../utils/hooks';
 import { FETCH_POSTS_QUERY } from '../utils/graphql';
@@ -40,18 +41,30 @@ const PostForm = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <h2>Create a Post:</h2>
-      <Form.Field>
-        <Form.Input
-          placeholder={`What's on your mind, ${user.username}?`}
-          name='body'
-          onChange={onChange}
-          value={values.body}
+    <>
+      <Form onSubmit={onSubmit}>
+        <h2>Create a Post:</h2>
+        <Form.Field>
+          <Form.Input
+            placeholder={`What's on your mind, ${user.username}?`}
+            name='body'
+            onChange={onChange}
+            value={values.body}
+            error={error ? true : false}
+          />
+          <Button type='submit'>Submit</Button>
+        </Form.Field>
+      </Form>
+
+      {error && (
+        <Message
+          style={{ marginBottom: 20 }}
+          error
+          header='There was some errors with your submission'
+          list={[error.graphQLErrors[0].message]}
         />
-        <Button type='submit'>Submit</Button>
-      </Form.Field>
-    </Form>
+      )}
+    </>
   );
 };
 
