@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Card, Image, Button } from 'semantic-ui-react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
+import { AuthContext } from '../context/auth';
+import LikeButton from './LikeButton';
+
 const PostCard = ({
   post: { body, createdAt, id, username, likeCount, commentCount, likes },
 }) => {
+  const { user } = useContext(AuthContext);
+
   const likePost = () => {
     console.log('like post');
-  };
-
-  const commentOnPost = () => {
-    console.log('comment on post');
   };
 
   return (
@@ -30,22 +31,20 @@ const PostCard = ({
         <Card.Description>{body}</Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <Button
-          basic
-          size='tiny'
-          icon='heart'
-          label={{ basic: true, content: likeCount }}
-          labelPosition='right'
-          onClick={likePost}
-        />
+        <LikeButton user={user} post={{ id, likes, likeCount }} />
         <Button
           basic
           size='tiny'
           icon='conversation'
           label={{ basic: true, content: commentCount }}
           labelPosition='right'
-          onClick={commentOnPost}
+          as={Link}
+          to={`/posts/${id}`}
         />
+
+        {user && user.username === username && (
+          <Button basic size='tiny' icon='trash' floated='right' />
+        )}
       </Card.Content>
     </Card>
   );
