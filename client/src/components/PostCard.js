@@ -19,6 +19,7 @@ const PostCard = ({
       <Card.Content>
         <Image
           floated='right'
+          circular
           size='mini'
           src='https://react.semantic-ui.com/images/avatar/large/molly.png'
         />
