@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../context/auth';
 import LikeButton from './LikeButton';
+import DeleteButton from './DeleteButton';
 
 const PostCard = ({
   post: { body, createdAt, id, username, likeCount, commentCount, likes },
@@ -42,9 +43,7 @@ const PostCard = ({
           to={`/posts/${id}`}
         />
 
-        {user && user.username === username && (
-          <Button basic size='tiny' icon='trash' floated='right' />
-        )}
+        {user && user.username === username && <DeleteButton postId={id} />}
       </Card.Content>
     </Card>
   );

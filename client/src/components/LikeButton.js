@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 
 const LikeButton = ({ user, post: { id, likeCount, likes } }) => {
   const [liked, setLiked] = useState(false);
@@ -39,13 +39,12 @@ const LikeButton = ({ user, post: { id, likeCount, likes } }) => {
       />
     )
   ) : (
-    <Button
-      basic
-      size='tiny'
-      label={{ basic: true, content: 'Back home' }}
-      as={Link}
-      to='/'
-    />
+    <Button size='tiny' animated>
+      <Button.Content visible>Back</Button.Content>
+      <Button.Content hidden>
+        <Icon name='arrow left' />
+      </Button.Content>
+    </Button>
   );
 
   return <>{likeButton}</>;
