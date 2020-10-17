@@ -39,7 +39,7 @@ const LikeButton = ({ user, post: { id, likeCount, likes } }) => {
       />
     )
   ) : (
-    <Button size='tiny' animated>
+    <Button size='small' animated>
       <Button.Content visible>Back</Button.Content>
       <Button.Content hidden>
         <Icon name='arrow left' />

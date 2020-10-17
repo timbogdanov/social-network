@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useQuery } from '@apollo/client';
-import { Grid, Transition } from 'semantic-ui-react';
+import { Card, Grid, Transition, Placeholder } from 'semantic-ui-react';
 
 import { AuthContext } from '../context/auth';
 import PostCard from '../components/PostCard';
@@ -23,7 +23,24 @@ const Home = () => {
           </Grid.Column>
         )}
         {loading ? (
-          <h1>Loading posts...</h1>
+          <Grid.Column style={{ marginBottom: 30 }}>
+            <Card fluid>
+              <Card.Content>
+                <Placeholder>
+                  <Placeholder.Header image>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Header>
+                  <Placeholder.Paragraph>
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                    <Placeholder.Line />
+                  </Placeholder.Paragraph>
+                </Placeholder>
+              </Card.Content>
+            </Card>
+          </Grid.Column>
         ) : (
           <Transition.Group>
             {data.getPosts &&
