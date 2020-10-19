@@ -3,25 +3,28 @@ import React, { useContext } from 'react';
 import { Card, Grid, Image, Button } from 'semantic-ui-react';
 import moment from 'moment';
 
-import { FETCH_POSTS_QUERY } from '../utils/graphql';
 import { AuthContext } from '../context/auth';
 import LikeButton from '../components/LikeButton';
+import DeleteButton from '../components/DeleteButton';
 
 const SinglePost = (props) => {
   const postId = props.match.params.postId;
 
   const { user } = useContext(AuthContext);
 
-  const {
-    data: { getPost },
-  } = useQuery(FETCH_POSTS_QUERY, {
+  const data = useQuery(FETCH_POST_QUERY, {
     variables: {
       postId,
     },
   });
 
+  function deletePostCallback() {
+    props.history.push('/');
+  }
+
   let postMarkup;
-  if (!getPost) {
+
+  if (!data.data) {
     postMarkup = <p>Loading post...</p>;
   } else {
     const {
@@ -33,7 +36,7 @@ const SinglePost = (props) => {
       likes,
       likeCount,
       commentCount,
-    } = getPost;
+    } = data.data.getPost;
 
     postMarkup = (
       <Grid>
@@ -43,11 +46,11 @@ const SinglePost = (props) => {
               floated='right'
               circular
               size='small'
-              src='https://react.semantic-ui.com/images/avatar/large/molly.png'
+              src='https://react.semantic-ui.com/images/avatar/large/matt.jpg'
             />
           </Grid.Column>
 
-          <Grid.Column width={10}>
+          <Grid.Column width={14}>
             <Card fluid>
               <Card.Content>
                 <Card.Header>{username}</Card.Header>
@@ -59,6 +62,9 @@ const SinglePost = (props) => {
                 <Card.Content extra>
                   <LikeButton user={user} post={{ id, likeCount, likes }} />
                   <Button baisc size='tiny' icon='conversation' />
+                  {user && user.username === username && (
+                    <DeleteButton postId={id} callback={deletePostCallback} />
+                  )}
                 </Card.Content>
               </Card.Content>
             </Card>
@@ -68,7 +74,7 @@ const SinglePost = (props) => {
     );
   }
 
-  return <div></div>;
+  return postMarkup;
 };
 
 const FETCH_POST_QUERY = gql`
@@ -77,6 +83,7 @@ const FETCH_POST_QUERY = gql`
       id
       body
       createdAt
+      username
       likeCount
       likes {
         username
