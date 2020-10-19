@@ -50,7 +50,7 @@ const SinglePost = (props) => {
             />
           </Grid.Column>
 
-          <Grid.Column width={14}>
+          <Grid.Column width={10}>
             <Card fluid>
               <Card.Content>
                 <Card.Header>{username}</Card.Header>
@@ -61,13 +61,32 @@ const SinglePost = (props) => {
 
                 <Card.Content extra>
                   <LikeButton user={user} post={{ id, likeCount, likes }} />
-                  <Button baisc size='tiny' icon='conversation' />
+                  <Button
+                    basic
+                    size='tiny'
+                    icon='conversation'
+                    label={{ basic: true, content: commentCount }}
+                    labelPosition='right'
+                  />
                   {user && user.username === username && (
                     <DeleteButton postId={id} callback={deletePostCallback} />
                   )}
                 </Card.Content>
               </Card.Content>
             </Card>
+
+            {comments.map((comment) => (
+              <Card fluid key={comment.id}>
+                <Card.Content>
+                  {user && user.username === comment.username && (
+                    <DeleteButton postId={id} commentId={comment.id} />
+                  )}
+                  <Card.Header>{comment.username}</Card.Header>
+                  <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
+                  <Card.Description>{comment.body}</Card.Description>
+                </Card.Content>
+              </Card>
+            ))}
           </Grid.Column>
         </Grid.Row>
       </Grid>

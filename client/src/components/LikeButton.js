@@ -39,14 +39,14 @@ const LikeButton = ({ user, post: { id, likeCount, likes } }) => {
       />
     )
   ) : (
-    <Button as='div' labelPosition='right'>
-      <Button size='tiny' icon onClick={likePost}>
-        <Icon name='heart' />
-      </Button>
-      <Label as='a' basic pointing='left'>
-        {likeCount}
-      </Label>
-    </Button>
+    <Button
+      basic
+      size='tiny'
+      icon='heart'
+      label={{ basic: true, content: likeCount }}
+      labelPosition='right'
+      onClick={likePost}
+    />
   );
 
   return <>{likeButton}</>;
