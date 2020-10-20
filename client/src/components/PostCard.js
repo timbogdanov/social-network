@@ -1,20 +1,17 @@
 import React, { useContext } from 'react';
-import { Card, Image, Button } from 'semantic-ui-react';
+import { Card, Image, Button, Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../context/auth';
 import LikeButton from './LikeButton';
 import DeleteButton from './DeleteButton';
+import MyPopup from '../utils/MyPopup';
 
 const PostCard = ({
   post: { body, createdAt, id, username, likeCount, commentCount, likes },
 }) => {
   const { user } = useContext(AuthContext);
-
-  const likePost = () => {
-    console.log('like post');
-  };
 
   return (
     <Card fluid>
@@ -33,15 +30,17 @@ const PostCard = ({
       </Card.Content>
       <Card.Content extra>
         <LikeButton user={user} post={{ id, likes, likeCount }} />
-        <Button
-          basic
-          size='tiny'
-          icon='conversation'
-          label={{ basic: true, content: commentCount }}
-          labelPosition='right'
-          as={Link}
-          to={`/posts/${id}`}
-        />
+        <MyPopup content='Comment on post'>
+          <Button
+            basic
+            size='tiny'
+            icon='conversation'
+            label={{ basic: true, content: commentCount }}
+            labelPosition='right'
+            as={Link}
+            to={`/posts/${id}`}
+          />
+        </MyPopup>
 
         {user && user.username === username && <DeleteButton postId={id} />}
       </Card.Content>
